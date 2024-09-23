@@ -1,0 +1,16 @@
+# Ignore artifacts:
+build
+coverage
+
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/dist
+**/build
+**/.cache
+**/.env
+
+# Ignore all YAML files:
+**/*.yml
+**/*.yaml

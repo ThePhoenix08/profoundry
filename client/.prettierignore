@@ -1,0 +1,28 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+**/*.html
+
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/dist
+**/build
+**/.cache
+**/.env
+
+# Ignore all images:
+**/assets
+**/*.png
+**/*.jpg
+**/*.ico
+**/*.gif
+**/*.svg
+**/*.webp
+
+# Ignore all YAML files:
+**/*.yml
+**/*.yaml
