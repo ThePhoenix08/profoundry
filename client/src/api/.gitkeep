@@ -1,0 +1,4 @@
+This is api folder
+Here all the api query files will be stored
+They will be used for fetching data from server using react-query
+Probably have many subfolders or files depeding on the project

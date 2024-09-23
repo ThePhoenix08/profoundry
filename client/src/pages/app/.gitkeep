@@ -1,0 +1,4 @@
+app folder
+Here all the pages will be stored which are accessible after authentication
+They will be used for routing
+Probably have many subfolders representing different pages or sections

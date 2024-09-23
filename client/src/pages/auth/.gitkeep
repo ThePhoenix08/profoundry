@@ -1,0 +1,5 @@
+This is auth folder
+Here all the auth related pages will be stored
+They will be used for authentication
+These will be accessible publicly
+example: login, signup, forgot password, etc
