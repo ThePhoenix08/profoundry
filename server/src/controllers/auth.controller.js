@@ -2,9 +2,8 @@ import bcrypt from "bcryptjs";
 import prisma from "../lib/prisma.js";
 
 const signup = async (req, res, next) => {
+	const { username, email, password } = req.body;
 	try {
-		const { username, email, password } = req.body;
-
 		if (!username || !email || !password) {
 			return res
 				.status(400)
@@ -21,8 +20,6 @@ const signup = async (req, res, next) => {
 			},
 		});
 
-        
-
 		res.status(201).json({
 			message: "User created successfully",
 			username: username,
@@ -35,16 +32,35 @@ const signup = async (req, res, next) => {
 	}
 };
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
+	const { username, password } = req.body;
 	try {
-		const { username, password } = req.body;
-
 		if (!username || !password) {
 			return res
 				.status(400)
 				.json({ message: "Missing required fields during login!!" });
 		}
 
+		// CHECK IF THE USER EXIST IN THE DATABASE
+		const CreatedUser = await prisma.user.findUnique({
+			where: { username: username },
+		});
+
+		if (!CreatedUser) {
+			res
+				.status(401)
+				.json({ message: "Invalid Credentials,User doent exist!!" });
+		}
+
+		//CHECK IF THE PASSWORD IS CORRECT
+		const isPasswordValid = await bcrypt.compare(password, user.password);
+
+		if (!isPasswordValid) {
+			res
+				.status(401)
+				.json({ message: "Invalid Credentials,Invalid password!!" });
+		}
+        
 		res.status(200).json({
 			message: "User logedin successfully!!",
 		});
