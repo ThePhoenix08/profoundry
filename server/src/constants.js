@@ -6,5 +6,4 @@ const ENV_VARIABLES = {
   LOCALDB_URL: localUri,
 };
 
-
 export default ENV_VARIABLES;

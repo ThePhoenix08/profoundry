@@ -1,0 +1,42 @@
+name: Prettier Formatting
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  prettier-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prettify client code
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: '--write "client/**/*.{js,jsx,json,md,css}"'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  prettier-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prettify server code
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: '--write "server/**/*.{js,json,md,css}"'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

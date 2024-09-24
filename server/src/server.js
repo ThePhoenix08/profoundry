@@ -16,11 +16,11 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 
 // routes
 app.get("/api", (_req, res) => {
-	res.send("Hello, server is healthy. Welcome to Profoundry!");
+  res.send("Hello, server is healthy. Welcome to Profoundry!");
 });
 
 app.use("/api/auth", authRoutes);
 
 app.listen(ENV_VARIABLES.PORT, () => {
-	console.log(`Server is running on port ${ENV_VARIABLES.PORT}`);
+  console.log(`Server is running on port ${ENV_VARIABLES.PORT}`);
 });
