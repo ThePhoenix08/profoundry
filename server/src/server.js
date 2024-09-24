@@ -3,12 +3,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import ENV_VARIABLES from "./constants.js";
 import cors from "cors";
-import connectDB from "./db/connectDB.js";
-
-dotenv.config({
-  path: "./.env",
-});
-connectDB();
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -20,10 +15,12 @@ app.use(express.static("public")); // for serving static files
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // routes
-app.get("/health", (_req, res) => {
-  res.send("Hello, server is healthy. Welcome to Profoundry!");
+app.get("/api", (_req, res) => {
+	res.send("Hello, server is healthy. Welcome to Profoundry!");
 });
 
+app.use("/api/auth", authRoutes);
+
 app.listen(ENV_VARIABLES.PORT, () => {
-  console.log(`Server is running on port ${ENV_VARIABLES.PORT}`);
+	console.log(`Server is running on port ${ENV_VARIABLES.PORT}`);
 });
