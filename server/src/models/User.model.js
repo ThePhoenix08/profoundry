@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 // DATABASE SHEMAS
 const userSchema = new mongoose.Schema({
@@ -6,9 +6,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  username: {
+    type: String,
+    unique: true,
+    required: true
+  },
   email: {
     type: String,
     unique: true,
+    required: true
   },
   password: String,
   first_name: String,
@@ -32,7 +38,7 @@ const userProfileSchema = new mongoose.Schema({
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: user,
+    ref: "User",
     required: true,
   },
   headline: String,
@@ -50,12 +56,12 @@ const userCertificationSchema = new mongoose.Schema({
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: user,
+    ref: "User",
     required: true,
   },
   cert_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: userSingleCertificate,
+    ref: "userSingleCertificate",
     required: true,
   },
   issue_date: Date,

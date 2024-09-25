@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
-import prisma from "../lib/prisma.js";
+import mongoose from "mongoose";
+import { user } from "../models/User.model.js";
 
 const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -12,12 +13,22 @@ const signup = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(`hashed password: ${hashedPassword}`);
 
-    const newUser = await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
+    // CHECK FOR IF USER ALREADY EXIST
+    const existing_user = await user.findUnique({
+      where: {
+        email: req.body.email,
       },
+    });
+
+    if (existing_user) {
+      res.status(400).json({ message: "User with this email already exist" });
+    }
+
+    // CREATE NEW USER
+    const create_user = await user.create({
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
     });
 
     res.status(201).json({
@@ -40,7 +51,7 @@ const login = async (req, res, next) => {
         .status(400)
         .json({ message: "Missing required fields during login!!" });
     }
-	
+
     // CHECK IF THE USER EXIST IN THE DATABASE
     const CreatedUser = await prisma.user.findUnique({
       where: { username: username },
