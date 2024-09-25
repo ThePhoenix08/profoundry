@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 // DATABASE SHEMAS
 const userSchema = new mongoose.Schema({
@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
 
 const userProfileSchema = new mongoose.Schema({
   id: {
+    type: String,
+    unique: true,
+  },
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: user,
     required: true,
@@ -40,13 +44,32 @@ const userProfileSchema = new mongoose.Schema({
 });
 
 const userCertificationSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    unique: true,
+  },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: user,
     required: true,
   },
+  cert_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: userSingleCertificate,
+    required: true,
+  },
   issue_date: Date,
   expiration_date: Date,
+});
+
+const singleCertificationSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    unique: true,
+  },
+  name: String,
+  description: String,
+  validity_period: Number,
 });
 
 // DATABASE MODELS
@@ -56,5 +79,9 @@ const userCertifications = mongoose.model(
   "UserCertificates",
   userCertificationSchema
 );
+const userSingleCertificate = mongoose.model(
+  "userSingleCertificate",
+  singleCertificationSchema
+);
 
-export { user, userProfile, userCertifications };
+export { user, userProfile, userCertifications, userSingleCertificate };
