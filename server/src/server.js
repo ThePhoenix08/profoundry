@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import ENV_VARIABLES from "./constants.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/api", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use(errorHandler); // for handling errors
 
 app.listen(ENV_VARIABLES.PORT, () => {
   console.log(`Server is running on port ${ENV_VARIABLES.PORT}`);
