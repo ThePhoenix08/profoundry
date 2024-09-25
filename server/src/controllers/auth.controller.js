@@ -40,7 +40,7 @@ const login = async (req, res, next) => {
         .status(400)
         .json({ message: "Missing required fields during login!!" });
     }
-	
+
     // CHECK IF THE USER EXIST IN THE DATABASE
     const CreatedUser = await prisma.user.findUnique({
       where: { username: username },

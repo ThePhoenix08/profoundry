@@ -1,5 +1,5 @@
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import ApiError from "../utils/ApiError.util.js";
 import ApiResponse from "../utils/ApiResponse.util.js";
 import { ZodError } from "zod";
@@ -12,11 +12,14 @@ const serverRoot = path.resolve(__dirname, "../"); // This should point to the '
 const errorHandler = (err, req, res, next) => {
   let error = err;
   let isZodError = err instanceof ZodError;
-  
+
   if (isZodError) {
     error = ApiError.validationError("Validation Error", err.format());
   } else if (!(err instanceof ApiError)) {
-    error = ApiError.internalServerError(err.message || "Internal Server Error", err.details || {});
+    error = ApiError.internalServerError(
+      err.message || "Internal Server Error",
+      err.details || {}
+    );
   }
 
   const { message, statusCode, errorType, details } = error;
@@ -44,11 +47,13 @@ const errorHandler = (err, req, res, next) => {
 
   if (formattedResponse.data.parent.length) {
     console.error("\x1b[34m%s\x1b[0m", "Parent Functions:");
-    formattedResponse.data.parent.forEach(({ functionName, filePath, lineNumber, columnNumber }, idx) => {
-      console.error(
-        `\x1b[34m${idx + 1}.\x1b[0m ${functionName} at \x1b[36m${filePath}:${lineNumber}:${columnNumber}\x1b[0m`
-      );
-    });
+    formattedResponse.data.parent.forEach(
+      ({ functionName, filePath, lineNumber, columnNumber }, idx) => {
+        console.error(
+          `\x1b[34m${idx + 1}.\x1b[0m ${functionName} at \x1b[36m${filePath}:${lineNumber}:${columnNumber}\x1b[0m`
+        );
+      }
+    );
   }
 
   console.error("\x1b[31m%s\x1b[0m", "--- END ERROR REPORT ---");
@@ -63,7 +68,9 @@ const errorHandler = (err, req, res, next) => {
     },
   };
 
-  return res.status(statusCode).json(ENV_VARIABLES.DEV_MODE ? formattedResponse : resError);
+  return res
+    .status(statusCode)
+    .json(ENV_VARIABLES.DEV_MODE ? formattedResponse : resError);
 };
 
 const getParentFunctions = (stack) => {
@@ -78,28 +85,30 @@ const getParentFunctions = (stack) => {
       const { functionName, filePath, lineNumber, columnNumber } = match.groups;
       let relativePath;
 
-      if (filePath.includes('node_modules')) {
+      if (filePath.includes("node_modules")) {
         // Keep node_modules paths as they are
-        relativePath = filePath.substring(filePath.indexOf('node_modules'));
-      } else if(filePath.includes('src')) {
+        relativePath = filePath.substring(filePath.indexOf("node_modules"));
+      } else if (filePath.includes("src")) {
         // For source files, make the path relative to the 'src' directory
-        relativePath = filePath.substring(filePath.indexOf('src'));
+        relativePath = filePath.substring(filePath.indexOf("src"));
       } else {
         relativePath = path.relative(serverRoot, filePath);
-        relativePath = relativePath.startsWith('src') ? relativePath : `src/${relativePath}`;
+        relativePath = relativePath.startsWith("src")
+          ? relativePath
+          : `src/${relativePath}`;
       }
 
       // Convert backslashes to forward slashes for consistency
-      relativePath = relativePath.replace(/\\/g, '/');
-      
-      // Remove 'file:/' prefix if present
-      relativePath = relativePath.replace(/^file:\/+/, '');
+      relativePath = relativePath.replace(/\\/g, "/");
 
-      parentFunctions.push({ 
-        functionName, 
-        filePath: relativePath, 
-        lineNumber, 
-        columnNumber 
+      // Remove 'file:/' prefix if present
+      relativePath = relativePath.replace(/^file:\/+/, "");
+
+      parentFunctions.push({
+        functionName,
+        filePath: relativePath,
+        lineNumber,
+        columnNumber,
       });
     }
   }
