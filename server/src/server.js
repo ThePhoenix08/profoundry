@@ -4,9 +4,13 @@ import dotenv from "dotenv";
 import ENV_VARIABLES from "./constants.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import connectDatabase from "./DB/database.connect.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
+
+// connecting the database to the server
+connectDatabase();
 
 // middlewares
 app.use(cors({ credentials: true, origin: "*" })); // ! IMPORTANT: change origin to your frontend domain
