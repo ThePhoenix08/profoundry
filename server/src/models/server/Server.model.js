@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { refID } from "../types.js";
+import { refID } from "../../types/types.js";
 
 const serverSchema = new mongoose.Schema({
   name: String,

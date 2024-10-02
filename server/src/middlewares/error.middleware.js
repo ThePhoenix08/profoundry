@@ -58,7 +58,7 @@ const errorHandler = (err, req, res, next) => {
 
   console.error("\x1b[31m%s\x1b[0m", "--- END ERROR REPORT ---");
 
-  const resError = {
+  const userFirendlyErrorResponse = {
     message,
     statusCode,
     errorType,
@@ -70,7 +70,9 @@ const errorHandler = (err, req, res, next) => {
 
   return res
     .status(statusCode)
-    .json(ENV_VARIABLES.DEV_MODE ? formattedResponse : resError);
+    .json(
+      ENV_VARIABLES.DEV_MODE ? formattedResponse : userFirendlyErrorResponse
+    );
 };
 
 const getParentFunctions = (stack) => {

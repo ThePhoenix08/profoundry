@@ -6,5 +6,7 @@
   "terminal.integrated.cwd": "${workspaceFolder}",
   "terminal.integrated.shellIntegration.enabled": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active"
 }
