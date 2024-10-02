@@ -25,6 +25,7 @@ const userSchema = new Schema(
       match: [emailRegex, "Email: {VALUE} is invalid."],
     },
     password: { type: String, required: [true, "Password is required field."] },
+    emailVerified: { type: Boolean, default: false },
     personal_details: {
       type: Object,
       required: [true, "Personal details is required field."],
