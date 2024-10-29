@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
 import {
   alphabetOnlyRegex,
-  emailRegex,
   validPhoneNumberRegex,
   validURLRegex,
 } from "../../validators/Regex.validator.js";
@@ -10,22 +9,11 @@ import { refID } from "../../types/types.js";
 // USER Schema
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      trim: true,
-      unique: true,
-      required: [true, "Username is required field."],
-      index: true,
+    credentials: {
+      type: refID,
+      ref: "User",
+      required: [true, "Credentials is required field."],
     },
-    email: {
-      type: String,
-      unique: true,
-      index: true,
-      required: [true, "Email is required field."],
-      match: [emailRegex, "Email: {VALUE} is invalid."],
-    },
-    password: { type: String, required: [true, "Password is required field."] },
-    emailVerified: { type: Boolean, default: false },
     personal_details: {
       type: Object,
       required: [true, "Personal details is required field."],
@@ -168,5 +156,5 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
-export default User;
+const UserProfile = model("UserProfile", userSchema);
+export default UserProfile;
