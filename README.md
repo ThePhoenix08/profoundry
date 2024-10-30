@@ -34,7 +34,6 @@ Profoundry is an innovative platform that combines the professional networking c
     ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
     ![Zod](https://img.shields.io/badge/zod-black.svg?style=for-the-badge&logo=zod&logoColor=3068b7)
     ![Socket.io](https://img.shields.io/badge/Socket.io-%23010101.svg?style=for-the-badge&logo=socket.io&logoColor=white)
-    ![Springboot](https://dominickm.com/wp-content/uploads/2016/06/spring-boot-logo_full.png)
 
 ## Project Contributors
 - [Vighnesh Brahme](https://github.com/ThePhoenix08)
