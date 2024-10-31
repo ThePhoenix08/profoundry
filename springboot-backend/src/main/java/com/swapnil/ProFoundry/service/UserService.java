@@ -2,11 +2,9 @@ package com.swapnil.ProFoundry.service;
 
 
 import com.swapnil.ProFoundry.model.Users;
-import com.swapnil.ProFoundry.requests.LoginRequest;
-import com.swapnil.ProFoundry.requests.RegisterRequest;
-import com.swapnil.ProFoundry.responses.LoginResponse;
-import com.swapnil.ProFoundry.responses.RegisterResponse;
-import com.swapnil.ProFoundry.responses.UserResponse;
+import com.swapnil.ProFoundry.request.RegisterRequest;
+import com.swapnil.ProFoundry.response.RegisterResponse;
+import com.swapnil.ProFoundry.response.UserResponse;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Service;
 
@@ -28,4 +26,6 @@ public interface UserService {
     void processForgotPassword(String email);
 
     void resetPassword(String token, String newPassword);
+
+    void updateTwoFactorAuth(String email, boolean enable2FA);
 }

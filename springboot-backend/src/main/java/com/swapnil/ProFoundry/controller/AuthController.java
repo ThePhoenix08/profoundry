@@ -4,23 +4,27 @@ package com.swapnil.ProFoundry.controller;
 
 
 import com.swapnil.ProFoundry.model.Users;
-import com.swapnil.ProFoundry.requests.LoginRequest;
-import com.swapnil.ProFoundry.requests.RegisterRequest;
-import com.swapnil.ProFoundry.responses.LoginResponse;
-import com.swapnil.ProFoundry.responses.RegisterResponse;
-import com.swapnil.ProFoundry.responses.UserResponse;
+import com.swapnil.ProFoundry.request.RegisterRequest;
+import com.swapnil.ProFoundry.response.LoginResponse;
+import com.swapnil.ProFoundry.response.RegisterResponse;
+import com.swapnil.ProFoundry.response.UserResponse;
 import com.swapnil.ProFoundry.service.SessionService;
 import com.swapnil.ProFoundry.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,15 +35,31 @@ public class AuthController {
 
     private final UserService userService;
     private final SessionService sessionService;
+    private final OAuth2AuthorizedClientService clientService;
 
 
-    @PostMapping("/signUp")
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register ( @Valid @RequestBody RegisterRequest registerRequest){
         RegisterResponse response=userService.register(registerRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/2fa/setup")
+    public ResponseEntity<String> setupTwoFactorAuth(@RequestParam String email, @RequestParam boolean enable2FA){
+
+        try {
+            userService.updateTwoFactorAuth(email, enable2FA);
+            String message = enable2FA ? "Two-factor authentication enabled" : "Two-factor authentication disabled";
+
+            return ResponseEntity.ok(message);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update 2FA settings: "+e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/2fa/verify")
     public ResponseEntity<String> verifyUser(@RequestParam String email, String emailOtp){
 
         try{
@@ -72,6 +92,18 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username/email or password.");
         }
     }
+
+    @PostMapping("/oauth/{provider}")
+    public void authenticate(
+            @PathVariable String provider,
+            HttpServletResponse res
+            ) throws IOException {
+        String redirectUrl="/oauth2/authorization/"+ provider;
+
+        res.sendRedirect(redirectUrl);
+
+    }
+
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email){

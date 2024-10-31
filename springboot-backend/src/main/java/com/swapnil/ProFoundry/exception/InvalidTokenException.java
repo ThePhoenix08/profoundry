@@ -1,4 +1,4 @@
-package com.swapnil.ProFoundry.exceptions;
+package com.swapnil.ProFoundry.exception;
 
 public class InvalidTokenException extends RuntimeException{
 

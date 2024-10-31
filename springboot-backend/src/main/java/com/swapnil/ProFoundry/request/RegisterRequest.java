@@ -1,4 +1,4 @@
-package com.swapnil.ProFoundry.requests;
+package com.swapnil.ProFoundry.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

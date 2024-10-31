@@ -16,9 +16,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -32,6 +34,7 @@ public class SecurityConfig {
 
 
     private final MyUserDetailService myUserDetailService;
+
 
     @Bean
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -55,7 +58,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // Disable CSRF protection (should only be disabled for APIs)
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
 
                 // Configure session management (new way in Spring Security 6.1+)
                 .sessionManagement(session -> session
@@ -68,23 +71,24 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/signUp", "/api/auth/verify", "/api/auth/login", "/api/auth/forgot-password").permitAll()
                         .requestMatchers("/api/auth/reset-password").permitAll()
+                        .requestMatchers("/api/auth/2fa/setup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/users").permitAll()
-                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/oauth2/**","/api/auth/oauth").permitAll()
                         .requestMatchers("/error").permitAll()
-                          .anyRequest().authenticated());
+                          .anyRequest().authenticated())
+
 
 //                // OAuth2 login configuration
-//                .oauth2Login(auth -> auth
-//
-//                        .defaultSuccessUrl("/api/auth/users", true)  // Redirect after successful login
-//                        .failureUrl("/api/failure"))  // Redirect after failed login
+                .oauth2Login(auth -> auth
+                        .defaultSuccessUrl("/api/auth/users", true)  // Redirect after successful login
+                        .failureUrl("/api/failure"))  // Redirect after failed login
 
-                // Configure logout behavior
-//                .logout(logout -> logout
-//                        .logoutUrl("/api/auth/logout") // Specify the logout URL
-//                        .logoutSuccessUrl("/api/auth/login") // Redirect after successful logout
-//                        .invalidateHttpSession(true) // Invalidate session
-//                        .deleteCookies("JSESSIONID")); // Delete specified cookies
+//                 Configure logout behavior
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout") // Specify the logout URL
+                        .logoutSuccessUrl("/api/auth/login") // Redirect after successful logout
+                        .invalidateHttpSession(true) // Invalidate session
+                        .deleteCookies("JSESSIONID")); // Delete specified cookies
 
         return http.build();
     }

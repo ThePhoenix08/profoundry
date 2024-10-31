@@ -1,4 +1,4 @@
-package com.swapnil.ProFoundry.requests;
+package com.swapnil.ProFoundry.response;
 
 
 import lombok.AllArgsConstructor;
@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginRequest {
+public class RegisterResponse {
 
+    private String username;
     private String email;
-    private String password;
-    private String emailOtp;
+    private String token;
 }

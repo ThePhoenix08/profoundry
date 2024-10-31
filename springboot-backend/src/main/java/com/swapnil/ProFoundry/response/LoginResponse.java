@@ -1,4 +1,4 @@
-package com.swapnil.ProFoundry.responses;
+package com.swapnil.ProFoundry.response;
 
 
 import lombok.AllArgsConstructor;

@@ -3,9 +3,9 @@ package com.swapnil.ProFoundry.service.impl;
 
 import com.swapnil.ProFoundry.model.Users;
 import com.swapnil.ProFoundry.repo.UserRepo;
-import com.swapnil.ProFoundry.requests.RegisterRequest;
-import com.swapnil.ProFoundry.responses.RegisterResponse;
-import com.swapnil.ProFoundry.responses.UserResponse;
+import com.swapnil.ProFoundry.request.RegisterRequest;
+import com.swapnil.ProFoundry.response.RegisterResponse;
+import com.swapnil.ProFoundry.response.UserResponse;
 import com.swapnil.ProFoundry.service.EmailService;
 //import com.swapnil.ProFoundry.service.JWTService;
 import com.swapnil.ProFoundry.service.JWTService;
@@ -13,6 +13,7 @@ import com.swapnil.ProFoundry.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -75,6 +76,8 @@ public class UserServiceImpl implements UserService {
 
         return res;
     }
+
+
 
     @Override
     public void verify(String email, String emailOtp) {
@@ -185,6 +188,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateTwoFactorAuth(String email, boolean enable2FA) {
+
+
+        Optional<Users> opUser = Optional.ofNullable(userRepo.findByEmail(email));
+
+        Users user = opUser.orElseThrow(() ->
+                new RuntimeException("User not found with " + email));
+
+        user.setIs2FAEnabled(enable2FA);
+        userRepo.save(user);
+
+    }
 
 
 }
