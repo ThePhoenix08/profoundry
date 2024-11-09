@@ -29,6 +29,7 @@ Profoundry is an innovative platform that combines the professional networking c
 
     ![NodeJS](https://img.shields.io/badge/node.js-black?style=for-the-badge&logo=node.js&logoColor=3C873A)
     ![Express.js](https://img.shields.io/badge/express.js-black.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+    ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
     ![MongoDB](https://img.shields.io/badge/MongoDB-black.svg?style=for-the-badge&logo=mongodb&logoColor=00ED64)
     ![Prisma](https://img.shields.io/badge/Prisma-black.svg?style=for-the-badge&logo=prisma&logoColor=white)
     ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
